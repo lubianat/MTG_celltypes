@@ -1,0 +1,19 @@
+#PBS -N integration
+#PBS -j oe
+#PBS -l cput=6:00:00
+#PBS -l walltime=6:00:00
+#PBS -l nodes=1:ppn=32
+#PBS -l mem=60gb
+
+mkdir /scratch/lubianat/MTG_celltypes
+mkdir /scratch/lubianat/MTG_celltypes/data
+mkdir /scratch/lubianat/MTG_celltypes/R
+
+cp ~/sandbox/MTG_celltypes/R scratch/lubianat/MTG_celltypes/R
+cp ~/sandbox/MTG_celltypes/data /scratch/lubianat/MTG_celltypes/data
+
+cd /scratch/lubianat/MTG_celltypes/R
+Rscript -e 'library(rmarkdown); rmarkdown::render("~/sandbox/MTG_celltypes/src/Code_0_prepareComparisonDataSets.Rmd")'
+
+rsync -Cravzp /scratch/lubianat/MTG_celltypes ~/sandbox/MTG_celltypes/
+rm -rf /scratch/lubianat/MTG_celltypes
